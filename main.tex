@@ -19,7 +19,8 @@
 \usepackage{multirow}
 \usepackage{subfigure}
 \usepackage{multicol}
-
+\usepackage{adjustbox}
+\usepackage{scalefnt}
 %==================================================================================
 \definecolor{DarkGreen}{rgb}{0,.5,0}
 \definecolor{DarkRed}{rgb}{.5,0,0}
@@ -65,7 +66,7 @@ showstringspaces=false
 \title[]{Estudo de viabilidade do uso de Raspberry PI na névoa}
 \author[]{\textbf{\underline{Guilherme de Souza}\\ Nelson Lago \\ Prof. Dr. Gerson Cavalheiro\\ Prof. Dr. Alfredo Goldman\\}
 Centro de Desenvolvimento Tecnológico\\
-%Bolsista PROBIC/PROBITI\\
+Bolsista PROBIC/PROBITI\\
  WSCAD 2019\\
  gdsdsilva@inf.ufpel.edu.br\\
 }
@@ -83,19 +84,19 @@ Centro de Desenvolvimento Tecnológico\\
     \frametitle{Introdução}
     \begin{block}{\textbf{Introdução}}
     \begin{itemize}
-      \item 1,4\% da energia mundial é consumida por \textit{datacenters} cujas máquinas possuem uma composição de \textit{hardwares} convencionais com alto consumo energético;
-      \item Existem, porém, dispositivos de arquitetura ARM cuja característica principal é o baixo consumo de energia;
-      \item Tais dispositivos também são capazes de atender a demanda de uma nuvem. 
+      \item Com o aumento de dispositivos que produzem e/ou consomem dados, maior tornou-se a demanda de processamento. Como resposta, rescursos disponiveis na nuvem foram empregados.
+      \item O processamento pode ocorrer em \textit{data centers} geograficamente distantes, assim aplicações que dependem de uma baixa latência tendem a sofrer com o caminho percorrido até a nuvem.
+      \item Com isso, um novo paradigma foi proposto, a \emph{Computação em Névoa}, que estende a Computação em Nuvem.
     \end{itemize}
   \end{block}
 }
 
 %% ---
 \frame{
-    \frametitle{Nuvem Computacional}
+    \frametitle{Computação em Névoa}
     \begin{figure}[!tbp]
       \centering
-      \includegraphics[width=0.80\textwidth]{img/CloudImage.png}\label{fig:f1}
+      \includegraphics[width=0.80\textwidth]{img/imageFog.png}\label{fig:f1}
     \end{figure}
 }
 %% ---
@@ -107,20 +108,20 @@ Centro de Desenvolvimento Tecnológico\\
       \centering
       \includegraphics[width=0.25\textwidth]{img/nuvem.png}\label{fig:f1}
     \end{figure}
-    \centering{\normalsize \bf \textit{Hardwares} de baixo consumo energético como parte de uma nuvem computacional são viáveis?}
+    \centering{\normalsize \bf \textit{Hardwares} de baixo consumo energético como parte de uma Névoa computacional são viáveis?}
   \end{block}
 }
 \frame{
   \frametitle{Objetivos}
   \begin{block}{Gerais}
     \begin{itemize}
-      \item Comparar a capacidade computacional de dois \textit{hardwares} de baixo consumo utilizando um \textit{benchmark}.  
+      \item Quantativar a capacidade computacional de \textit{hardwares} de baixo consumo utilizando um \textit{benchmark}.  
     \end{itemize}
   \end{block}
   \begin{block}{Específicos}
     \begin{itemize}
       \item Definir o \textit{benchmark} que melhor atende aos objetivos do trabalho; 
-      \item Decidir qual \textit{hardware} é o adequado para ser implementado em uma nuvem real.
+      \item Decidir qual \textit{hardware} é o adequado para suprir as necessidades propóstas.
     \end{itemize}
   \end{block}
 }
@@ -129,21 +130,30 @@ Centro de Desenvolvimento Tecnológico\\
 %==================================================================================
 \section{Metodologia}
 \frame{
+    \frametitle{Metodologia}
+    \begin{block}{\textit{Especificações}}
+        \begin{table}[]
+            \begin{tabular}{c|c}
+                \textbf{Especificação} & \textbf{Raspberry PI 3}                                                  \\ \hline
+                Processador            & \begin{tabular}[c]{@{}c@{}}BCM2837 64Bit\\ QUAD Core 1.2GHz\end{tabular} \\ \hline
+                    Arquitetura            & ARMv8                                                                    \\ \hline
+                    RAM                    & 1GB SDRAM 400MHz                                                         \\ \hline
+                    Armazenamento          & MicroSD                                                                  \\ \hline
+                    Corrente / Tensão      & 1,34A / 5V                                                               \\ \hline
+            \end{tabular}
+        \end{table}
+    \end{block}
+}
+
+\frame{
   \frametitle{Metodologia}
-  \begin{block}{\textit{Especificações}}
-    \begin{table}[!h]
-      \centering
-%      \caption{Especificações do \textit{hardware} dos dispositivos segundo o fabricante. A corrente e a tenão de cada dispositivo corresponde ao valor máximo suportado.}
-      \label{tab:espesificacao}
-      \begin{tabular}{|c|c|c|} \hline
-        \textbf{Especificação} & \textbf{Raspberry PI B+} & \textbf{Raspberry PI 3} \\ \hline
-        Processador & \begin{tabular}[c]{@{}c@{}}BCM2835 \\ SINGLE Core 700MHz\end{tabular} & \begin{tabular}[c]{@{}c@{}}BCM2837 64Bit \\ QUAD Core 1.2GHz\end{tabular} \\ \hline
-        Arquitetura & ARMv6 & ARMv8 \\ \hline
-        RAM & 512MB SDRAM 400MHz & 1GB SDRAM 400MHz \\ \hline
-        Amazenamento & Micro SD & MicroSD \\ \hline
-        Corrente/Tensão & 0,7A / 5V & 1,34A / 5V \\ \hline
-      \end{tabular}
-    \end{table}
+  \begin{block}{Banco de Dados}
+      \begin{itemize}
+          \item Visto que a demanda de serviços \textit{web} ocupa a maior parte das aplicações na nuvem, para a realização deste trabalho optou-se pelo uso de um banco de dados NoSQL.
+              \begin{itemize}
+                      \item Apache Cassandra.
+              \end{itemize}
+      \end{itemize}
   \end{block}
 }
 
@@ -151,10 +161,10 @@ Centro de Desenvolvimento Tecnológico\\
     \frametitle{Metodologia}
     \begin{block}{Benchmark}
         \begin{itemize}
-          \item O \textit{benchmark} escolhido foi o \textit{Yahoo! Cloud Serving Benchmark}~(\textbf{YCSB}):
+          \item O \textit{benchmark} escolhido foi o \textit{Netflix Data Benchmark}~(\textbf{NDBench}):
           \begin{itemize}
             \item Mede o desempenho de uma aplicação de banco de dados no dispositivo escolhido;
-            \item Obtem informações como vazão de operações e atraso de processamento das requisições.
+            \item Obtem informações como, operações na memória cache e resultados de latência em percentil.
           \end{itemize}
         \end{itemize}
     \end{block}
@@ -162,18 +172,22 @@ Centro de Desenvolvimento Tecnológico\\
 
 \frame{
     \frametitle{Metodologia}
-    \begin{block}{Execução}
-        \begin{itemize}
-          \item O teste é divido em duas partes:
-          \begin{itemize}
-            \item \textit{Load};
-            \item \textit{Run}.   
-          \end{itemize}
-          \item Contém seis testes diferentes:
-          \begin{itemize}
-            \item \textit{Workload} A à \textit{Workload} F. 
-          \end{itemize}
-        \end{itemize}
+    \begin{block}{Principais propriedades das cargas}
+        \begin{table}[]
+            \scalefont{0.98}
+            \begin{adjustbox}{scale=0.815}
+                \begin{tabular}{c|c}
+                    \textbf{Config. Nome}                                                    & \textbf{Descrição}                                                                                                           \\ \hline
+                    numKeys                                                                  & Espaço amostral para as chaves geradas aleatoriamente                                                                        \\ \hline
+                    numValues                                                                & Espaço amostral para os valores gerados                                                                                      \\ \hline
+                    dataSize                                                                 & Tamanho de cada valor                                                                                                        \\ \hline
+                    \begin{tabular}[c]{@{}c@{}}numWrites /\\ numReaders\end{tabular}         & \begin{tabular}[c]{@{}c@{}}Número de threads por nodo NDBench para\\ gravações / leituras\end{tabular}                       \\ \hline
+                        \begin{tabular}[c]{@{}c@{}}writeEnabled /\\ readEnabled\end{tabular}     & Booleano para ativar ou desativar escrita ou leitura                                                                         \\ \hline
+                            \begin{tabular}[c]{@{}c@{}}writeRateLimit /\\ readRateLimit\end{tabular} & Número de gravações e leituras por segundo                                                                                   \\ \hline
+                                userVariableDataSize                                                     & \begin{tabular}[c]{@{}c@{}}Booleano para ativar / desativar a capacidade da\\ carga a ser gerada aleatóriamente\end{tabular} \\ \hline
+                \end{tabular}
+            \end{adjustbox}
+        \end{table}
     \end{block}
 }
 
@@ -226,6 +240,7 @@ Centro de Desenvolvimento Tecnológico\\
 }
 
 %==================================================================
+
 \section{Resultados}
 \frame{
     \frametitle{Resultados}
@@ -245,52 +260,75 @@ Centro de Desenvolvimento Tecnológico\\
 }
 
 \frame{
-    \frametitle{Resultados de escrita}
+    \frametitle{Resultados de escritas}
     \begin{figure}[!ht]
         \centering
-        \mbox{%
-            \subfigure[Latência de escritas]{\label{avr-prgmem}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}\qquad
-            \subfigure[Requisições por segundo]{\label{avr-datamem}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}
-            }
-            \caption{Latências e requisições por segundo durante escrita no período de execução de 25 minutos desconsiderando os 5 primeiros do simulador.}
-            \label{fig:avr-memmap}
+        \includegraphics[scale=0.5]{img/pi3Write.png}
+        \caption{Latências por segundo durante escrita no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:write}
     \end{figure}
 }
 
 \frame{
-    \frametitle{Resultados de leitura}
-    \begin{figure}[!hb]
+    \frametitle{Resultados de escritas}
+    \begin{figure}[!ht]
         \centering
-        \mbox{%
-            \subfigure[Latências de leituras]{\label{avr-prgmem2}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}\qquad
-            \subfigure[Operações por segundo]{\label{avr-datamem2}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}
-            }
-            \caption{Latências e requisições por segundo durante leitura no período de execução de 25 minutos desconsiderando os 5 iniciais do simulador.}
-            \label{fig:avr-memmap2}
+        \includegraphics[scale=0.5]{img/pi3WriteRPS.png}
+        \caption{Requisições por segundo durante escrita no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:writeRPS}
     \end{figure}
 }
 
 \frame{
-    \frametitle{Resultados de escrita e leitura}
+    \frametitle{Resultados de leituras}
     \begin{figure}[!ht]
         \centering
-        \mbox{%
-            \subfigure[Latências de escritas]{\label{avr-prgmem3a}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}\qquad
-            \subfigure[Latências de leituras]{\label{avr-prgmem3b}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}
-            }
-            \subfigure[Operações por segundo]{\label{avr-datamem3}%
-            \includegraphics[width=0.2\textwidth]{/home/souza/Documents/LUPS/CIC/presentation/img/logoRaspberry.png}}
-            \caption{Latências e requisições por segundo de escrita e leitura no período de execução de 25 minutos desconsiderando os 5 iniciais do simulador.}
-            \label{fig:avr-memmap3}
+        \includegraphics[scale=0.5]{img/pi3Read.png}
+        \caption{Latências por segundo durante leitura no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:read}
     \end{figure}
-
 }
+
+\frame{
+    \frametitle{Resultados de leituras}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.5]{img/pi3ReadRPS.png}
+        \caption{Requisições por segundo durante leitura no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:readRPS}
+    \end{figure}
+}
+
+\frame{
+    \frametitle{Resultados de escritas e leituras}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.5]{img/pi3ReadInWriteAndRead.png}
+        \caption{Latência por segundo durante escritas e leituras no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:readInWriteAndRead}
+    \end{figure}
+}
+
+\frame{
+    \frametitle{Resultados de escritas e leituras}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.5]{img/pi3WriteInWriteAndRead.png}
+        \caption{Latência por segundo durante escritas e leituras no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:writeInWriteAndRead}
+    \end{figure}
+}
+
+\frame{
+    \frametitle{Resultados de escritas e leituras}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.5]{img/pi3WriteAndReadRPS.png}
+        \caption{Requisições por segundo durante escritas e leituras no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
+        \label{fig:readAndWriteRPS}
+    \end{figure}
+}
+
 %============================================================================================
 \section{Considerações Finais}
 \frame{

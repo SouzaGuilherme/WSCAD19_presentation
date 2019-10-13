@@ -193,50 +193,41 @@ Bolsista PROBIC/PROBITI\\
 
 \frame{
     \frametitle{Metodologia}
-    \scriptsize
-    \begin{block}{Características dos Workloads}
-      \begin{table}[!h]
-      \centering
-      \caption{Características dos \textit{workloads} selecionados para testes.}
-      \label{tab:workload}
-      \begin{tabular}{|c|c|c|c|c|}
-      \hline
-      \textit{Workload} & Número de Ops & Leitura & \textit{Update} & Detalhes        \\ \hline
-      a        & 1000        & 50\%    & 50\%        & Simula salvar uma sessão        \\ \hline
-      b        & 1000        & 95\%    & 5\%        & Simula adição de \textit{tags} a foto      \\ \hline
-      c        & 1000        & 100\%   & 0\%        & Simula \textit{cache} de perfil do usuário \\ \hline
-      d        & 1000        & 95\%    & 0\%        & 5\% de inserção não ordenadas     \\ \hline
-      \end{tabular}
-      \end{table}
+    \begin{block}{Parâmetros de entrada}
+    \begin{table}[!ht]
+        \centering
+        %\caption{Valores atribuídos às variáveis de execução do \textit{NDBench} durante os diferentes experimentos executados.}
+        \begin{tabular}{c|ccc}
+            \multirow{2}{*}{\textbf{Parâmetro}} & \multicolumn{3}{c}{\textbf{Valores atribuídos}}                                                                    \\ \cline{2-4} 
+            & \multicolumn{1}{c|}{\textbf{Experimento 1}} & \multicolumn{1}{c|}{\textbf{Experimento 2}} & \textbf{Experimento 3} \\ \hline
+            numWrite                            & \multicolumn{1}{c|}{256 Threads}            & \multicolumn{1}{c|}{256 Threads}            & 256 Threads            \\ \hline
+            numRead                             & \multicolumn{1}{c|}{256 Threads}            & \multicolumn{1}{c|}{256 Threads}            & 256 Threads            \\ \hline
+            writeRateLimit                      & \multicolumn{1}{c|}{2.000 e/s}              & \multicolumn{1}{c|}{0 e/s}                  & 500 e/s                \\ \hline
+            readRateLimit                       & \multicolumn{1}{c|}{0 l/s}                  & \multicolumn{1}{c|}{2.000 l/s}              & 1.500 l/s              \\ \hline
+        \end{tabular}
+    \end{table} 
     \end{block}
-}
+    }
+
+    \frame{
+        \frametitle{Metodologia}
+        \begin{block}{Metodologia do teste}
+            \begin{itemize}
+                \item Seguindo a documentação de ambas ferramentas "levantou-se" ambos ambientes para execução dos experimentos;
+                    %e utilizando um script de execução, que realizava os seguintes passos para cada \textit{workload}:
+                \item Para execução do \textit{NDBench} criou-se \textit{scripts} python, tanto para automatização, quanto para precisão de inicio e fim dos experimentos;
+                \item Os \textit{scripts} ajustavam os parâmetros de entrada de acordo com a tabela apresentada e, executava durante 25 minutos.
+            \end{itemize}
+        \end{block}
+    }
 
 \frame{
   \frametitle{Metodologia}
-  \begin{block}{Metodologia do teste}
-    \begin{itemize}
-    \item Seguindo a documentação e utilizando um script de execução, que realizava os seguintes passos para cada \textit{workload}:
-      \begin{itemize}
-        \item Executa o carregamento de chaves através do comando ycsb \textit{load};
-        \item Realiza o teste utilizando o comando ycsb \textit{run}, redirecionando a saída para um arquivo txt;
-        \item Limpa as chaves do banco de dados. 
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-}
-
-\frame{
-  \frametitle{Metodologia}
-  \begin{block}{Fórmulas}
-    \begin{itemize}
-    \item Realizou-se o cálculo da potência média e operações por Watt:
-      \begin{itemize}
-        \normalsize
-        \item \textit{Potência = Tensão * Corrente}; 
-        \item \textit{Operação por Watt = Média de vazão / Potência}.
-      \end{itemize} 
-    \end{itemize}
-  \end{block}
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.5]{img/ambienteExecucao.png}
+        \label{fig:ambiente}
+    \end{figure}
 }
 
 %==================================================================
@@ -244,10 +235,10 @@ Bolsista PROBIC/PROBITI\\
 \section{Resultados}
 \frame{
     \frametitle{Resultados}
-    \begin{block}{ }
+    \begin{block}{Total de sucesso e falhas}
         \begin{table}[!hb]
             \centering
-            \caption{Total de escritas e leituras alcançadas com sucesso e falhas ao final de 25 minutos. \label{tab:result_in_table}}
+           % \caption{Total de escritas e leituras alcançadas com sucesso e falhas ao final de 25 minutos. \label{tab:result_in_table}}
             \begin{tabular}{c|c|c|cc}
                 \multirow{2}{*}{\textbf{Experimentos}} & \multicolumn{2}{c|}{\textbf{Escrita}} & \multicolumn{2}{c}{\textbf{Leitura}}                   \\ \cline{2-5} 
                 & \textbf{Sucesso}   & \textbf{Falha}   & \multicolumn{1}{c|}{\textbf{Sucesso}} & \textbf{Falha} \\ \hline
@@ -260,7 +251,8 @@ Bolsista PROBIC/PROBITI\\
 }
 
 \frame{
-    \frametitle{Resultados de escritas}
+    \frametitle{Experimento 1}
+    \framesubtitle{Latência de escrita}
     \begin{figure}[!ht]
         \centering
         \includegraphics[scale=0.5]{img/pi3Write.png}
@@ -270,7 +262,8 @@ Bolsista PROBIC/PROBITI\\
 }
 
 \frame{
-    \frametitle{Resultados de escritas}
+    \frametitle{Experimento 1}
+    \framesubtitle{RPS de escrita}
     \begin{figure}[!ht]
         \centering
         \includegraphics[scale=0.5]{img/pi3WriteRPS.png}
@@ -280,7 +273,8 @@ Bolsista PROBIC/PROBITI\\
 }
 
 \frame{
-    \frametitle{Resultados de leituras}
+    \frametitle{Experimento 2}
+    \framesubtitle{Latência de leitura}
     \begin{figure}[!ht]
         \centering
         \includegraphics[scale=0.5]{img/pi3Read.png}
@@ -290,7 +284,8 @@ Bolsista PROBIC/PROBITI\\
 }
 
 \frame{
-    \frametitle{Resultados de leituras}
+    \frametitle{Experimento 2}
+    \framesubtitle{RPS de leitura}
     \begin{figure}[!ht]
         \centering
         \includegraphics[scale=0.5]{img/pi3ReadRPS.png}
@@ -300,27 +295,30 @@ Bolsista PROBIC/PROBITI\\
 }
 
 \frame{
-    \frametitle{Resultados de escritas e leituras}
+    \frametitle{Experimento 3}
+    \framesubtitle{Latência de escrita}
     \begin{figure}[!ht]
         \centering
-        \includegraphics[scale=0.5]{img/pi3ReadInWriteAndRead.png}
+        \includegraphics[scale=0.5]{img/pi3WriteInWriteAndRead.png}
         \caption{Latência por segundo durante escritas e leituras no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
         \label{fig:readInWriteAndRead}
     \end{figure}
 }
 
 \frame{
-    \frametitle{Resultados de escritas e leituras}
+    \frametitle{Experimento 3}
+    \framesubtitle{Latência de leitura}
     \begin{figure}[!ht]
         \centering
-        \includegraphics[scale=0.5]{img/pi3WriteInWriteAndRead.png}
+        \includegraphics[scale=0.5]{img/pi3ReadInWriteAndRead.png}
         \caption{Latência por segundo durante escritas e leituras no período de execução de 25m desconsiderando os 5m iniciais do simulador.}
         \label{fig:writeInWriteAndRead}
     \end{figure}
 }
 
 \frame{
-    \frametitle{Resultados de escritas e leituras}
+    \frametitle{Experimento 3}
+    \framesubtitle{RPS de escrita e leitura}
     \begin{figure}[!ht]
         \centering
         \includegraphics[scale=0.5]{img/pi3WriteAndReadRPS.png}
@@ -335,20 +333,37 @@ Bolsista PROBIC/PROBITI\\
   \frametitle{Considerações Finais}
   \begin{block}{ }
     \begin{itemize}
-       \item Raspberry PI 3 apresentou eficiência energética melhor nos testes realizados; 
-       \item 2x mais operações por Watt;
-       \item Assim sendo, demonstrou ser uma boa escolha entre as duas placas em teste, para compor o nó de baixo consumo de uma nuvem. %TODO: comparado a quem? tem certeza dessa afirmacao?
-       %GUI: Fiquei sem ideia do que por, e agora corrigir que contra sua rival, sim ela e superior.
+       \item Raspberry PI 3 apresentou-se eficiênte nos cenários propóstos, tanto em latência quanto em operações por segundo; 
+       \item Latência em percentil 95 entre 500ms e 1000ms, enquanto a latência média se manteve abaixo de 500ms;
+       \item Realizando em torno de 1.100 operações por segundo;
+       \item Assim sendo, tais resultados demonstram a possibilidade de uso da \textit{smallboard} em aplicações que tenham necessidades semelhantes. 
     \end{itemize}
   \end{block}
 }
+
+\frame{
+    \frametitle{Considerações Finais}
+    \begin{block}{}
+        \begin{itemize}
+            \item Técnicas de \textit{tuning} não foram exploradas no trabalho aqui apresentado;
+            \item Tudo utilizado na pesquisa encontra-se disponivel no Github para reprodução;
+                \begin{itemize}
+                    \item \url{github.com/SouzaGuilherme/research_PI3_evaluate_experiment};
+                    \item \textit{scripts};
+                    \item Resultados acompanhados do inicio do simulador.
+                \end{itemize}
+        \end{itemize}
+    \end{block}
+}
+
 \frame{
   \frametitle{Trabalhos Futuros}
   \begin{block}{ }
     \begin{itemize}
-       \item Realizar a integração da \textit{Small Board} Raspberry PI 3 em uma nuvem computacional. 
-       \item Analisar a viabilidade de tais dispositivos como parte da Computação em Névoa. 
-       \item Verificar a possibilidade da utilização do projeto \textit{Monitor Htop-as-a-service} desenvolvido pelo grupo.
+       \item Simular cenários mais realisticos como os gerados pela própria \textit{Netflix} e \textit{Facebook}; 
+       \item Estudo de aplicações mais restritas como as de industria 4.0 e as de cidades inteligentes; 
+       \item Aumemento horizontal do dispositivo, assim possibilitando um \textit{clustes} de Raspberry PI;
+       \item Estudo de eficiência e possibilidades com a sua descendente, à Raspberry PI4.
     \end{itemize}
   \end{block}
 }
@@ -357,8 +372,11 @@ Bolsista PROBIC/PROBITI\\
   \begin{block}{Agradecimentos}
     \begin{itemize}
       \item Grupo de Pesquisa: LUPS
+      \item Grupo de Pesquisa: InterSCity
 %      \item Orgãos de fomento: UFPEL
       \item Universidade Federal de Pelotas
+      \item Universidade Estadual de São Paulo
+      \item CAPES
     \end{itemize}
   \end{block}
   \begin{block}{Contato:}
